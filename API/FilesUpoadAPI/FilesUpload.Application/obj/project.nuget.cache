@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "9o5aYiLTiCHq71EHUMjyH7juoHnwyerlqXmPBT93XshVprg091CS2iBCNUYnBGKJDhW1ao6eTThf0EnEWTDKgw==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\FilesUplaod\\API\\FilesUpoadAPI\\FilesUpload.Application\\FilesUpload.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\maads\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.16\\microsoft.aspnetcore.http.features.5.0.16.nupkg.sha512",
+    "C:\\Users\\maads\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\maads\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
