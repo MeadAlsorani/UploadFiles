@@ -11,7 +11,8 @@ namespace Files.Upload.Upload
     public class FilesDbContext : DbContext
     {
         public FilesDbContext(DbContextOptions<FilesDbContext> options) : base(options)
-        { }
+        {
+        }
 
         public DbSet<FileToUpload> files { get; set; }
     }

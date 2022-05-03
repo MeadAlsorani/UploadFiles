@@ -17,9 +17,10 @@ namespace Files.Upload.Upload
         {
             services.AddDbContext<FilesDbContext>(options =>
             options.UseSqlServer(
-                config.GetConnectionString("ConnectionString"))
+                config.GetConnectionString("SQL"),
+                x => x.MigrationsAssembly("FilesUpload.Api"))
             );
-
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddScoped<IFileUpload, UploadFileRepository>();
             return services;
         }

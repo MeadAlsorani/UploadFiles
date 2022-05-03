@@ -1,4 +1,6 @@
-﻿using FilesUpload.Domain;
+﻿using FilesUpload.Application.DTOs;
+using FilesUpload.Application.Responses;
+using FilesUpload.Domain;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace FilesUpload.Application.Contracts
 {
     public interface IFileUpload
     {
-        Task<FileToUpload> GetFile(int Id);
-        Task<FileToUpload> UploadFile(IFormCollection formCollection);
+        Task<FileUplaodDto> GetFile(int Id);
+        Task<BaseResponse<FileUplaodDto>> UploadFile(IFormCollection formCollection);
     }
 }
