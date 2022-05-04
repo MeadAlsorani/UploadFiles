@@ -6,6 +6,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { HttpClientModule } from '@angular/common/http';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+
 @NgModule({
   imports: [],
   exports: [
@@ -17,6 +21,9 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
     NzGridModule,
     NzMessageModule,
     NzNotificationModule,
+    NzTableModule,
+    NzSpaceModule,
+    NzProgressModule,
   ],
 })
 export class SharedPackagesModule {}

@@ -15,5 +15,6 @@ namespace FilesUpload.Application.Contracts
         Task<BaseResponse<FileUplaodDto>> GetFile(int Id);
         Task<BaseResponse<FileUplaodDto>> UploadFile(IFormCollection formCollection);
         Task<BaseResponse<bool>> DeleteFile(int Id);
+        Task<string> GetFilePath(int Id);
     }
 }

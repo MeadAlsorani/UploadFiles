@@ -1,1 +1,69 @@
-<p>preview-section works!</p>
+<div class="view-section-container">
+  <div *ngFor="let table of tables">
+    <h2 style="color: white">{{ table }}</h2>
+    <nz-table [nzData]="files" nzShowPagination="false">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Type</th>
+          <th>Upload Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let file of files">
+          <tr *ngIf="file.fileType == table">
+            <td>{{ file.fileName }}</td>
+            <td>
+              <span *ngIf="file.fileSize < 1024">
+                <nz-space>
+                  <span *nzSpaceItem>{{
+                    file.fileSize | number: "1.2-2"
+                  }}</span>
+                  <span *nzSpaceItem>KB</span>
+                </nz-space>
+              </span>
+              <span *ngIf="file.fileSize >= 1024">
+                <nz-space>
+                  <span *nzSpaceItem>
+                    {{ file.fileSize / 1024 | number: "1.2-2" }}</span
+                  >
+                  <span *nzSpaceItem>MB</span>
+                </nz-space>
+              </span>
+              <span *ngIf="file.fileSize >= 1024 * 1024">
+                <nz-space>
+                  <span *nzSpaceItem>
+                    {{ file.fileSize / (1024 * 1024) | number: "1.2-2" }}</span
+                  >
+                  <span *nzSpaceItem>GB</span>
+                </nz-space>
+              </span>
+            </td>
+            <td>{{ file.fileType }}</td>
+            <td>{{ file.uploadDate | date: "medium" }}</td>
+            <td>
+              <button
+                nz-button
+                nzType="primary"
+                nzSize="small"
+                (click)="downloadFile(file.id)"
+              >
+                Preview
+              </button>
+              <button
+                nz-button
+                nzType="danger"
+                nzSize="small"
+                (click)="deleteFile(file.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

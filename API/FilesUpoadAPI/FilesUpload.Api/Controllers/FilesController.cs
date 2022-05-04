@@ -23,10 +23,16 @@ namespace FilesUpload.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponse<FileUplaodDto>>> GetFile(int id)
         {
-            var file=await FileRepository.GetFile(id);
+            var file = await FileRepository.GetFile(id);
             return HandleResponse(file);
         }
 
+        [HttpGet("path/{id}")]
+        public async Task<ActionResult<string>> GetFilePath(int id)
+        {
+            var path = await FileRepository.GetFilePath(id);
+            return Ok(new { fullPath = path });
+        }
         [HttpPost("UploadFile")]
         public async Task<ActionResult<BaseResponse<FileUplaodDto>>> UploadFile()
         {
@@ -45,7 +51,7 @@ namespace FilesUpload.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<BaseResponse<bool>>> DeleteFile(int id)
         {
-            var deleteFile=await FileRepository.DeleteFile(id);
+            var deleteFile = await FileRepository.DeleteFile(id);
             return HandleResponse(deleteFile);
         }
         private ActionResult HandleResponse<T>(BaseResponse<T> response)

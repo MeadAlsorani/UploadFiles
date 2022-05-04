@@ -50,7 +50,6 @@ namespace Files.Upload.Upload.Repositories
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     string contentType = file.ContentType;
-                    string fileExtenstion = Path.GetExtension(fileName);
                     string folderName;
                     string typeName = GetTypeName(contentType, out folderName);
 
@@ -68,22 +67,26 @@ namespace Files.Upload.Upload.Repositories
                     }
                     var allowedTypes = fileConfigs["AllowedFileTypes"];
                     var types = allowedTypes.Split('\u002C');
-                    if (!types.Contains(fileExtenstion.Substring(1)))
+                    if (!CheckFileType(contentType, types))
                     {
                         response = new BaseResponse<FileUplaodDto>(new List<string> { "File type is not permited" });
-                        return null;
+                        return response;
                     }
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
-                    var result = await SaveFile(dbPath, fileName, guidFileName, fileExtenstion, file.Length);
+                    var result = await SaveFile(dbPath, fileName, guidFileName, typeName, file.Length);
                     var fileDto = _mapper.Map<FileUplaodDto>(result);
                     response = new BaseResponse<FileUplaodDto>(fileDto);
                     return response;
                 }
-                else return null;
+                else
+                {
+                    response = new BaseResponse<FileUplaodDto>(new List<string> { "No file has been uploaded" });
+                    return response;
+                };
             }
             catch (Exception ex)
             {
@@ -92,6 +95,18 @@ namespace Files.Upload.Upload.Repositories
             }
         }
 
+        private bool CheckFileType(string type, string[] allowedTypes)
+        {
+            var isValid = false;
+            foreach (var allowedType in allowedTypes)
+            {
+                if (type.Contains(allowedType))
+                {
+                    isValid = true;
+                }
+            }
+            return isValid;
+        }
         private async Task<FileToUpload> SaveFile(string path, string name, string dbName, string type, double size)
         {
             try
@@ -168,6 +183,19 @@ namespace Files.Upload.Upload.Repositories
             {
                 return new BaseResponse<bool>(new List<string> { ex.Message });
             }
+        }
+
+        public async Task<string> GetFilePath(int Id)
+        {
+            var file = await DbContext.files.FindAsync(Id);
+            if (file != null)
+            {
+                string filePath = Path.Combine("Resources","Files", file.FileType);
+                string fullPath = Path.Combine(filePath, file.FileDBName);
+
+                return fullPath;
+            }
+            return null;
         }
     }
 }

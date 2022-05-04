@@ -1,6 +1,6 @@
 import { FilesUploadService } from './../../Files-Upload.service';
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { BaseResponse } from '../../Models/BaseResponse';
 import { FileToUpload } from '../../Models/FileToUpload';
@@ -33,9 +33,9 @@ export class UploadSectionComponent implements OnInit {
       .uploadFile(formData)
       .pipe(
         tap((event) => {
-          if (event.type === HttpEventType.UploadProgress)
+          if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round((100 * event.loaded) / event.total);
-          else if (event.type === HttpEventType.Response) {
+          } else if (event.type === HttpEventType.Response) {
             const response = event.body as BaseResponse<FileToUpload>;
             if (response.successful) {
               this.notificatonService.success(
@@ -43,7 +43,7 @@ export class UploadSectionComponent implements OnInit {
                 'File Uploaded Successfully'
               );
               this.progress = 0;
-              this.uploadService.uploadFinished.emit(event.body);
+              this.uploadService.uploadFinished$.emit(event.body);
             } else {
               this.notificatonService.error(
                 'Upload Failed',
@@ -54,6 +54,11 @@ export class UploadSectionComponent implements OnInit {
           console.log(event);
         })
       )
-      .subscribe();
+      .subscribe({
+        error: (err) => {
+          console.log(err);
+          this.notificatonService.error('Upload Failed', err.error.errors[0]);
+        },
+      });
   }
 }
