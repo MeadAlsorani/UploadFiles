@@ -52,7 +52,7 @@ namespace Files.Upload.Upload.Repositories
                     string contentType = file.ContentType;
                     string fileExtenstion = Path.GetExtension(fileName);
                     string folderName;
-                    string typeName = GetTypeName(contentType,out folderName);
+                    string typeName = GetTypeName(contentType, out folderName);
 
                     string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     string guidFileName = $"{Guid.NewGuid()}-{fileName}";
@@ -114,7 +114,7 @@ namespace Files.Upload.Upload.Repositories
                 return null;
             }
         }
-        private string GetTypeName(string contentType,out string folderName)
+        private string GetTypeName(string contentType, out string folderName)
         {
             string typeName = "";
             if (contentType == "application/pdf")
@@ -146,15 +146,28 @@ namespace Files.Upload.Upload.Repositories
         }
         public async Task<BaseResponse<bool>> DeleteFile(int Id)
         {
-            var file = await DbContext.files.FindAsync(Id);
-            if (file == null)
+            try
             {
-                return new BaseResponse<bool>(new List<string> { "No such file found" });
-            }
-            DbContext.files.Remove(file);
-            DbContext.SaveChanges();
+                var file = await DbContext.files.FindAsync(Id);
+                if (file == null)
+                {
+                    return new BaseResponse<bool>(new List<string> { "No such file found" });
+                }
+                DbContext.files.Remove(file);
+                DbContext.SaveChanges();
 
-            return new BaseResponse<bool>(false);
+                string typeName = GetTypeName(file.FileType, out string folderName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string fullPath = Path.Combine(filePath, file.FileDBName);
+                if (File.Exists(fullPath))
+                    File.Delete(fullPath);
+
+                return new BaseResponse<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool>(new List<string> { ex.Message });
+            }
         }
     }
 }

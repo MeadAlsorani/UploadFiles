@@ -1,0 +1,14 @@
+<a (click)="uploadInput.click()">
+  <div class="upload-section">
+    <div class="upload-content">
+      <i class="fas fa-plus-circle upload-icon"></i>
+      <p class="upload-text">click to upload file</p>
+    </div>
+    <input
+      type="file"
+      hidden
+      #uploadInput
+      (change)="uploadFile(uploadInput.files)"
+    />
+  </div>
+</a>
