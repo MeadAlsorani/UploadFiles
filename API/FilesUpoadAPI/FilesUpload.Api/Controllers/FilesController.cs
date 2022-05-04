@@ -20,21 +20,40 @@ namespace FilesUpload.Api.Controllers
             FileRepository = fileRepository;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BaseResponse<FileUplaodDto>>> GetFile(int id)
+        {
+            var file=await FileRepository.GetFile(id);
+            return HandleResponse(file);
+        }
 
         [HttpPost("UploadFile")]
-        public async Task<ActionResult<FileUplaodDto>> UploadFile()
+        public async Task<ActionResult<BaseResponse<FileUplaodDto>>> UploadFile()
         {
             BaseResponse<FileUplaodDto> response;
             try
             {
                 var formCollection = await Request.ReadFormAsync();
                 var uploadResult = await FileRepository.UploadFile(formCollection);
-                return Ok(uploadResult);
+                return HandleResponse(uploadResult);
             }
             catch (Exception ex)
             {
                 return BadRequest(response = new BaseResponse<FileUplaodDto>(new List<string> { ex.Message }));
             }
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BaseResponse<bool>>> DeleteFile(int id)
+        {
+            var deleteFile=await FileRepository.DeleteFile(id);
+            return HandleResponse(deleteFile);
+        }
+        private ActionResult HandleResponse<T>(BaseResponse<T> response)
+        {
+            if (response.Data == null)
+                return BadRequest(response);
+            else
+                return Ok(response);
         }
     }
 }

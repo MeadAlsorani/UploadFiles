@@ -12,7 +12,8 @@ namespace FilesUpload.Application.Contracts
 {
     public interface IFileUpload
     {
-        Task<FileUplaodDto> GetFile(int Id);
+        Task<BaseResponse<FileUplaodDto>> GetFile(int Id);
         Task<BaseResponse<FileUplaodDto>> UploadFile(IFormCollection formCollection);
+        Task<BaseResponse<bool>> DeleteFile(int Id);
     }
 }

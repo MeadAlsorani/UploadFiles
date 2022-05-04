@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Files.Upload.Upload
 {
-    public class AutoMapperProfile:Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
-            CreateMap<FileToUpload, FileUplaodDto>();
+            CreateMap<FileToUpload, FileUplaodDto>()
+                .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.DateCreated));
         }
     }
 }

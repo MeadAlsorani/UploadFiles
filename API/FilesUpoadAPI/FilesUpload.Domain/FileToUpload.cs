@@ -11,7 +11,8 @@ namespace FilesUpload.Domain
     {
         public string FileType { get; set; }
         public string FileName { get; set; }
+        public string FileDBName { get; set; }
         public string Path { get; set; }
-        public int FileSize { get; set; }
+        public double FileSize { get; set; }
     }
 }
